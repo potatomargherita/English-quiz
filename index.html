@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LEAP QUIZ</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- ==================== -->
+        <!-- タイトル -->
+        <!-- ==================== -->
+
+        <h1>LEAP QUIZ</h1>
+
+
+        <!-- ==================== -->
+        <!-- ロード画面 -->
+        <!-- ==================== -->
+
+        <div id="loading-screen" class="quiz-box">
+
+            <h2>Loading...</h2>
+
+            <p>単語データを読み込んでいます</p>
+
+        </div>
+
+
+        <!-- ==================== -->
+        <!-- スタート画面 -->
+        <!-- ==================== -->
+
+        <div id="start-screen" class="quiz-box" style="display: none;">
+
+            <h2>クイズ設定</h2>
+
+
+            <!-- 出題範囲 -->
+
+            <p>出題範囲</p>
+
+            <div class="range-input">
+
+                <input
+                    type="number"
+                    id="start-id"
+                    placeholder="開始"
+                    min="1"
+                    max="2300"
+                    value="1"
+                >
+
+                <span>〜</span>
+
+                <input
+                    type="number"
+                    id="end-id"
+                    placeholder="終了"
+                    min="1"
+                    max="2300"
+                    value="100"
+                >
+
+            </div>
+
+
+            <!-- 問題数 -->
+
+            <p>問題数</p>
+
+            <div class="question-number">
+
+                <input
+                    type="number"
+                    id="question-count"
+                    placeholder="問題数"
+                    min="1"
+                    max="100"
+                    value="10"
+                >
+
+                <span>問</span>
+
+            </div>
+
+
+            <!-- START -->
+
+            <button id="start-button">
+                START QUIZ
+            </button>
+
+        </div>
+
+
+        <!-- ==================== -->
+        <!-- クイズ画面 -->
+        <!-- ==================== -->
+
+        <div id="quiz-screen" class="quiz-box" style="display: none;">
+
+            <!-- 進捗 -->
+
+            <p id="progress">
+                1 / 10
+            </p>
+
+
+            <!-- 問題 -->
+
+            <div class="question-area">
+
+                <p>この単語の意味は？</p>
+
+                <h2 id="question">
+                    ---
+                </h2>
+
+            </div>
+
+
+            <!-- 4択 -->
+
+            <div class="choices">
+
+                <button class="choice"></button>
+
+                <button class="choice"></button>
+
+                <button class="choice"></button>
+
+                <button class="choice"></button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================== -->
+        <!-- 結果画面 -->
+        <!-- ==================== -->
+
+        <div id="result-screen" class="quiz-box" style="display: none;">
+
+            <h2>QUIZ COMPLETE!</h2>
+
+            <p>あなたの結果</p>
+
+
+            <!-- 点数 -->
+
+            <h3 id="score">
+                0 / 10
+            </h3>
+
+
+            <!-- 正答率 -->
+
+            <p id="percentage">
+                正答率 0%
+            </p>
+
+
+            <!-- もう一度 -->
+
+            <button id="retry-button">
+                もう一度挑戦
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
