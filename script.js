@@ -761,10 +761,6 @@ function shuffle(array) {
 
 }
 
-document.querySelector("#next-button").onclick = () => {
-    document.querySelector("#feedback").style.display = "none";
-    createQuestion();
-};
 
 // ==================================================
 // 学習状況画面
