@@ -793,3 +793,21 @@ document.querySelector(
     ).style.display = "block";
 
 };
+
+// ==================================================
+// 学習状況 → 戻る
+// ==================================================
+
+document.querySelector(
+    "#status-back-button"
+).onclick = () => {
+
+    document.querySelector(
+        "#status-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#start-screen"
+    ).style.display = "block";
+
+};
