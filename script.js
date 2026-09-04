@@ -571,8 +571,8 @@ function createQuestion() {
 // 正解・不正解
 // --------------------------------------
 
-const choicesArea =
-    document.querySelector(".choices");
+const quizScreen =
+    document.querySelector("#quiz-screen");
 
 
 if (isCorrect) {
@@ -580,7 +580,7 @@ if (isCorrect) {
     correctCount++;
 
     // 選択肢エリアを水色にする
-    choicesArea.classList.add("correct");
+    quizScreen.classList.add("correct");
 
     // 選んだ正解を水色にする
     buttons[index].classList.add(
@@ -590,7 +590,7 @@ if (isCorrect) {
 } else {
 
     // 選択肢エリアを赤色にする
-    choicesArea.classList.add("incorrect");
+    quizScreen.classList.add("incorrect");
 
     // 選んだ不正解を赤色にする
     buttons[index].classList.add(
@@ -622,10 +622,10 @@ if (isCorrect) {
 
 setTimeout(() => {
 
-    choicesArea.classList.remove(
-        "correct",
-        "incorrect"
-    );
+    quizScreen.classList.remove(
+    "correct",
+    "incorrect"
+);
 
     buttons.forEach(button => {
 
