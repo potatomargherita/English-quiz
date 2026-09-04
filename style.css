@@ -90,3 +90,25 @@ h1 {
     border: 1px solid #ccc;
     border-radius: 8px;
 }
+
+/* =========================================
+   回答後の色
+========================================= */
+
+.choices.correct {
+    background-color: #dff6ff;
+}
+
+.choices.incorrect {
+    background-color: #ffe1e1;
+}
+
+.choice.correct-answer {
+    background-color: #bdeeff;
+    border-color: #42b8e8;
+}
+
+.choice.wrong-answer {
+    background-color: #ffb3b3;
+    border-color: #ef6666;
+}

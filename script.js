@@ -567,29 +567,78 @@ function createQuestion() {
                 );
 
 
-                // --------------------------------------
-                // 正解・不正解
-                // --------------------------------------
+            // --------------------------------------
+// 正解・不正解
+// --------------------------------------
 
-                if (isCorrect) {
-                    correctCount++;
-
-                    document.querySelector("#feedback-title").textContent = "正解！";
-                    document.querySelector("#feedback-text").textContent = "その調子！";
-                } else {
-                    document.querySelector("#feedback-title").textContent = "不正解";
-                    document.querySelector("#feedback-text").textContent =
-                    `正解は「${correctWord.meaning}」です。`;
-                }
-
-                document.querySelector("#feedback").style.display = "block";
+const choicesArea =
+    document.querySelector(".choices");
 
 
-                // --------------------------------------
-                // 次の問題
-                // --------------------------------------
+if (isCorrect) {
 
-                createQuestion();
+    correctCount++;
+
+    // 選択肢エリアを水色にする
+    choicesArea.classList.add("correct");
+
+    // 選んだ正解を水色にする
+    buttons[index].classList.add(
+        "correct-answer"
+    );
+
+} else {
+
+    // 選択肢エリアを赤色にする
+    choicesArea.classList.add("incorrect");
+
+    // 選んだ不正解を赤色にする
+    buttons[index].classList.add(
+        "wrong-answer"
+    );
+
+    // 正解の選択肢を水色にする
+    buttons.forEach((button, buttonIndex) => {
+
+        if (
+            choices[buttonIndex].id ===
+            correctWord.id
+        ) {
+
+            button.classList.add(
+                "correct-answer"
+            );
+
+        }
+
+    });
+
+}
+
+
+// --------------------------------------
+// 1.5秒後に次の問題
+// --------------------------------------
+
+setTimeout(() => {
+
+    choicesArea.classList.remove(
+        "correct",
+        "incorrect"
+    );
+
+    buttons.forEach(button => {
+
+        button.classList.remove(
+            "correct-answer",
+            "wrong-answer"
+        );
+
+    });
+
+    createQuestion();
+
+}, 1500);
 
             };
 
