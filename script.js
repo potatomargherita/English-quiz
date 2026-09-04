@@ -644,3 +644,21 @@ document.querySelector(
     ).style.display = "block";
 
 };
+
+// ==================================================
+// HOME → LEAP HOME
+// ==================================================
+
+document.querySelector(
+    "#leap-button"
+).onclick = () => {
+
+    document.querySelector(
+        "#home-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "block";
+
+};
