@@ -765,3 +765,21 @@ document.querySelector("#next-button").onclick = () => {
     document.querySelector("#feedback").style.display = "none";
     createQuestion();
 };
+
+// ==================================================
+// 学習状況画面
+// ==================================================
+
+document.querySelector(
+    "#status-button"
+).onclick = () => {
+
+    document.querySelector(
+        "#start-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#status-screen"
+    ).style.display = "block";
+
+};
