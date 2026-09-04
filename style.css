@@ -38,11 +38,21 @@ h1 {
 
 .choice {
     padding: 16px;
+
     font-size: 16px;
+
     border: 1px solid #ccc;
+
     border-radius: 10px;
+
     background: white;
+
+    color: #333;
+
     cursor: pointer;
+
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .choice:hover {
@@ -185,5 +195,112 @@ h1 {
 
 #home-screen button:active,
 #leap-home-screen button:active {
+    transform: translateY(0);
+}
+
+/* =========================================
+   TEST設定画面
+========================================= */
+
+#test-settings-screen h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+#test-settings-screen > p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+
+/* 設定項目 */
+
+#test-settings-screen > div {
+    margin: 18px auto;
+    max-width: 400px;
+    text-align: left;
+}
+
+#test-settings-screen label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    color: #555;
+}
+
+
+/* 入力欄 */
+
+#test-settings-screen input {
+    box-sizing: border-box;
+
+    width: 100%;
+
+    padding: 14px;
+
+    font-size: 18px;
+
+    text-align: center;
+
+    border: 1px solid #ccc;
+    border-radius: 10px;
+
+    background: #fafafa;
+
+    color: #333;
+
+    outline: none;
+}
+
+
+/* 入力欄を選択したとき */
+
+#test-settings-screen input:focus {
+    border-color: #42b8e8;
+
+    background: white;
+}
+
+
+/* STARTボタン */
+
+#test-settings-screen #start-button {
+    display: block;
+
+    width: 100%;
+    max-width: 400px;
+
+    margin: 30px auto 0;
+
+    padding: 17px;
+
+    font-size: 19px;
+    font-weight: bold;
+
+    color: white;
+
+    background: #42b8e8;
+
+    border: none;
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.1s ease;
+}
+
+#test-settings-screen #start-button:hover {
+    background: #2fa8dc;
+
+    transform: translateY(-2px);
+}
+
+#test-settings-screen #start-button:active {
     transform: translateY(0);
 }
