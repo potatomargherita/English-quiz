@@ -595,3 +595,163 @@ document.querySelector(
     ).style.display = "block";
 
 };
+
+// ==================================================
+// TEST設定 → クイズ開始
+// ==================================================
+
+document.querySelector(
+    "#start-button"
+).onclick = () => {
+
+    // 入力値を取得
+    startId = Number(
+        document.querySelector(
+            "#start-id"
+        ).value
+    );
+
+    endId = Number(
+        document.querySelector(
+            "#end-id"
+        ).value
+    );
+
+    totalQuestions = Number(
+        document.querySelector(
+            "#question-count"
+        ).value
+    );
+
+
+    // ==================================================
+    // 入力チェック
+    // ==================================================
+
+    if (startId < 1) {
+
+        alert(
+            "開始番号は1以上にしてください。"
+        );
+
+        return;
+    }
+
+
+    if (endId > 2300) {
+
+        alert(
+            "終了番号は2300以下にしてください。"
+        );
+
+        return;
+    }
+
+
+    if (startId > endId) {
+
+        alert(
+            "開始番号は終了番号以下にしてください。"
+        );
+
+        return;
+    }
+
+
+    if (
+        totalQuestions < 1 ||
+        totalQuestions > 100
+    ) {
+
+        alert(
+            "問題数は1〜100問で設定してください。"
+        );
+
+        return;
+    }
+
+
+    // ==================================================
+    // 出題範囲の単語を取得
+    // ==================================================
+
+    const candidates = words.filter(word => {
+
+        return (
+            word.id >= startId &&
+            word.id <= endId
+        );
+
+    });
+
+
+    // 4択を作れるか確認
+    if (candidates.length < 4) {
+
+        alert(
+            "出題範囲は4語以上にしてください。"
+        );
+
+        return;
+    }
+
+
+    // 問題数が多すぎないか確認
+    if (
+        totalQuestions >
+        candidates.length
+    ) {
+
+        alert(
+            `この範囲には${candidates.length}語しかありません。\n` +
+            `問題数を${candidates.length}問以下にしてください。`
+        );
+
+        return;
+    }
+
+
+    // ==================================================
+    // クイズを初期化
+    // ==================================================
+
+    currentQuestion = 0;
+    correctCount = 0;
+
+
+    // 今回出題する単語を決定
+    quizWords = shuffle(
+        [...candidates]
+    ).slice(
+        0,
+        totalQuestions
+    );
+
+
+    console.log(
+        "今回の出題:",
+        quizWords
+    );
+
+
+    // ==================================================
+    // 画面切り替え
+    // ==================================================
+
+    document.querySelector(
+        "#test-settings-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#result-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#quiz-screen"
+    ).style.display = "block";
+
+
+    // 最初の問題
+    createQuestion();
+
+};
