@@ -572,18 +572,17 @@ function createQuestion() {
                 // --------------------------------------
 
                 if (isCorrect) {
-
                     correctCount++;
 
-                    alert("正解！");
-
+                    document.querySelector("#feedback-title").textContent = "正解！";
+                    document.querySelector("#feedback-text").textContent = "その調子！";
+                } else {
+                    document.querySelector("#feedback-title").textContent = "不正解";
+                    document.querySelector("#feedback-text").textContent =
+                    `正解は「${correctWord.meaning}」です。`;
                 }
 
-                else {
-
-                    alert("不正解！");
-
-                }
+                document.querySelector("#feedback").style.display = "block";
 
 
                 // --------------------------------------
@@ -712,3 +711,8 @@ function shuffle(array) {
     return array;
 
 }
+
+document.querySelector("#next-button").onclick = () => {
+    document.querySelector("#feedback").style.display = "none";
+    createQuestion();
+};
