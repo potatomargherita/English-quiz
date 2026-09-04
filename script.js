@@ -755,3 +755,21 @@ document.querySelector(
     createQuestion();
 
 };
+
+// ==================================================
+// TEST設定 → LEAP HOME
+// ==================================================
+
+document.querySelector(
+    "#test-back-button"
+).onclick = () => {
+
+    document.querySelector(
+        "#test-settings-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "block";
+
+};

@@ -304,3 +304,43 @@ h1 {
 #test-settings-screen #start-button:active {
     transform: translateY(0);
 }
+
+/* =========================================
+   TEST設定 → 戻るボタン
+========================================= */
+
+#test-settings-screen #test-back-button {
+    display: block;
+
+    width: 100%;
+    max-width: 400px;
+
+    margin: 12px auto 0;
+
+    padding: 14px;
+
+    font-size: 16px;
+
+    color: #666;
+
+    background: white;
+
+    border: 1px solid #ccc;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.1s ease;
+}
+
+#test-settings-screen #test-back-button:hover {
+    background-color: #f5f5f5;
+
+    transform: translateY(-1px);
+}
+
+#test-settings-screen #test-back-button:active {
+    transform: translateY(0);
+}
