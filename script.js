@@ -577,3 +577,21 @@ document.querySelector(
     ).style.display = "block";
 
 };
+
+// ==================================================
+// LEAP HOME → TEST設定
+// ==================================================
+
+document.querySelector(
+    "#leap-test-button"
+).onclick = () => {
+
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#test-settings-screen"
+    ).style.display = "block";
+
+};
