@@ -128,3 +128,9 @@ h1 {
 #quiz-screen.incorrect {
     background-color: #ffe1e1;
 }
+
+/* 回答後も選択肢の文字を薄くしない */
+.choice:disabled {
+    opacity: 1;
+    color: #333;
+}
