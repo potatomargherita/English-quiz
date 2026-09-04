@@ -774,6 +774,42 @@ document.querySelector(
     const studiedCount =
         Object.keys(studyData).length;
 
+    // 全体の正解数・不正解数を合計
+let totalCorrect = 0;
+let totalIncorrect = 0;
+
+Object.values(studyData).forEach(data => {
+
+    totalCorrect += data.correct;
+    totalIncorrect += data.incorrect;
+
+});
+
+
+// 全体の正答率を計算
+const totalAnswers =
+    totalCorrect + totalIncorrect;
+
+let accuracy = 0;
+
+if (totalAnswers > 0) {
+
+    accuracy =
+        Math.round(
+            totalCorrect /
+            totalAnswers *
+            100
+        );
+
+}
+
+
+// 画面に表示
+document.querySelector(
+    "#overall-accuracy"
+).textContent =
+    `${accuracy}%`;
+
     // 画面に表示
     document.querySelector(
         "#studied-count"
