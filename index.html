@@ -104,50 +104,29 @@
         <!-- クイズ画面 -->
         <!-- ==================== -->
 
-        <div id="quiz-screen" class="quiz-box" style="display: none;">
+        <div id="quiz-screen" class="quiz-box">
 
-            <!-- 進捗 -->
+    <div class="quiz-content">
 
-            <p id="progress">
-                1 / 10
-            </p>
+        <p id="progress">1 / 10</p>
 
+        <div class="question-area">
+            <p>この単語の意味は？</p>
+            <h2 id="question">---</h2>
+        </div>
 
-            <!-- 問題 -->
+        <div class="choices">
 
-            <div class="question-area">
-
-                <p>この単語の意味は？</p>
-
-                <h2 id="question">
-                    ---
-                </h2>
-
-            </div>
-
-
-            <!-- 4択 -->
-
-            <div class="choices">
-
-                <button class="choice"></button>
-
-                <button class="choice"></button>
-
-                <button class="choice"></button>
-
-                <button class="choice"></button>
-
-            </div>
-
-            <div id="feedback" class="feedback" style="display: none;">
-                <h3 id="feedback-title"></h3>
-                <p id="feedback-text"></p>
-                <button id="next-button">次の問題</button>
-            </div>
+            <button class="choice"></button>
+            <button class="choice"></button>
+            <button class="choice"></button>
+            <button class="choice"></button>
 
         </div>
 
+    </div>
+
+</div>
 
         <!-- ==================== -->
         <!-- 結果画面 -->

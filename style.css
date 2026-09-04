@@ -112,3 +112,19 @@ h1 {
     background-color: #ffb3b3;
     border-color: #ef6666;
 }
+
+/* =========================================
+   問題画面全体の回答結果
+========================================= */
+
+#quiz-screen {
+    transition: background-color 0.2s ease;
+}
+
+#quiz-screen.correct {
+    background-color: #dff6ff;
+}
+
+#quiz-screen.incorrect {
+    background-color: #ffe1e1;
+}
