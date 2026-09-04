@@ -162,7 +162,7 @@ fetch(API_URL)
         // ------------------------------------------
 
         document.querySelector(
-            "#loading-screen"
+            "#home-screen"
         ).style.display = "none";
 
 
