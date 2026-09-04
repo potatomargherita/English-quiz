@@ -770,10 +770,24 @@ document.querySelector(
     "#status-button"
 ).onclick = () => {
 
+    // 学習した単語数を計算
+    const studiedCount =
+        Object.keys(studyData).length;
+
+    // 画面に表示
+    document.querySelector(
+        "#studied-count"
+    ).textContent =
+        `${studiedCount}語`;
+
+
+    // スタート画面を隠す
     document.querySelector(
         "#start-screen"
     ).style.display = "none";
 
+
+    // 学習状況画面を表示
     document.querySelector(
         "#status-screen"
     ).style.display = "block";
