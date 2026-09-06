@@ -3,7 +3,11 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 import {
-    getAuth,
+    initializeAuth,
+    browserLocalPersistence,
+    indexedDBLocalPersistence,
+    browserSessionPersistence,
+    browserPopupRedirectResolver,
     GoogleAuthProvider,
     signInWithPopup,
     onAuthStateChanged
@@ -30,18 +34,18 @@ const firebaseConfig = {
 
 };
 
+const firebaseApp = initializeApp(firebaseConfig);
 
-const firebaseApp =
-    initializeApp(firebaseConfig);
+const auth = initializeAuth(firebaseApp, {
+    persistence: [
+        indexedDBLocalPersistence,
+        browserLocalPersistence,
+        browserSessionPersistence
+    ],
+    popupRedirectResolver: browserPopupRedirectResolver
+});
 
-
-const auth =
-    getAuth(firebaseApp);
-
-
-const googleProvider =
-    new GoogleAuthProvider();
-
+const googleProvider = new GoogleAuthProvider();
 
 // ==================================================
 // API
