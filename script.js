@@ -1487,6 +1487,8 @@ function startWeakTest() {
 
     correctCount = 0;
 
+    quizResults = [];
+
 
     console.log(
         "今回のWEAK TEST:",
