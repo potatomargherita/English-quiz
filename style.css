@@ -649,6 +649,20 @@ h1 {
     gap: 10px;
 
     margin-bottom: 25px;
+
+    /* 一覧の高さを固定 */
+    max-height: 400px;
+
+    /* 一覧の中だけスクロール */
+    overflow-y: auto;
+
+    /* 枠 */
+    padding: 10px;
+
+    border: 1px solid #ddd;
+    border-radius: 12px;
+
+    background: #fafafa;
 }
 
 .result-word {
@@ -801,6 +815,10 @@ h1 {
 
     .result-meaning {
         font-size: 13px;
+    }
+
+    #result-word-list {
+        max-height: 350px;
     }
 
 }
