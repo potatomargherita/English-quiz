@@ -13,6 +13,12 @@ import {
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 // ==================================================
 // Firebase
@@ -44,6 +50,8 @@ const auth = initializeAuth(firebaseApp, {
     ],
     popupRedirectResolver: browserPopupRedirectResolver
 });
+
+const db = getFirestore(firebaseApp);
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -116,42 +124,117 @@ function saveStudyData() {
 
 }
 
+// ==================================================
+// Firestore 学習履歴
+// ==================================================
+
+async function loadStudyDataFromFirestore(user) {
+    try {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+
+            const data = userSnap.data();
+
+            studyData = data.studyData || {};
+
+            // localStorageにも反映
+            saveStudyData();
+
+            console.log("Firestoreから学習履歴を読み込みました");
+            console.log(studyData);
+
+        } else {
+
+            console.log("Firestoreに学習履歴がありません");
+
+            // 初回ログイン時
+            // 既にlocalStorageにデータがあれば移行
+            if (Object.keys(studyData).length > 0) {
+
+                await setDoc(userRef, {
+                    studyData: studyData
+                });
+
+                console.log(
+                    "localStorageの学習履歴をFirestoreへ移行しました"
+                );
+
+            } else {
+
+                await setDoc(userRef, {
+                    studyData: {}
+                });
+
+                console.log(
+                    "新しい学習データをFirestoreに作成しました"
+                );
+            }
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Firestore読み込みエラー:",
+            error
+        );
+    }
+}
+
 
 // ==================================================
 // 回答結果を記録
 // ==================================================
 
-function recordAnswer(wordId, isCorrect) {
+async function recordAnswer(wordId, isCorrect) {
 
     if (!studyData[wordId]) {
-
         studyData[wordId] = {
             correct: 0,
             incorrect: 0
         };
-
     }
-
 
     if (isCorrect) {
-
         studyData[wordId].correct++;
-
     } else {
-
         studyData[wordId].incorrect++;
-
     }
 
-
+    // 今まで通りlocalStorageにも保存
     saveStudyData();
 
+    // ログイン中のユーザー
+    const user = auth.currentUser;
 
-    console.log(
-        "学習履歴:",
-        studyData[wordId]
-    );
+    if (user) {
+        try {
 
+            const userRef = doc(db, "users", user.uid);
+
+            await setDoc(
+                userRef,
+                {
+                    studyData: studyData
+                },
+                {
+                    merge: true
+                }
+            );
+
+            console.log("Firestoreに学習履歴を保存しました");
+
+        } catch (error) {
+
+            console.error(
+                "Firestore保存エラー:",
+                error
+            );
+        }
+    }
+
+    console.log("学習履歴:", studyData[wordId]);
 }
 
 
@@ -207,7 +290,7 @@ fetch(API_URL)
 
         onAuthStateChanged(
             auth,
-            user => {
+            async user => {
 
                 if (user) {
 
@@ -229,6 +312,9 @@ fetch(API_URL)
                         "UID:",
                         user.uid
                     );
+
+                    // Firestoreから学習履歴を読み込む
+                    await loadStudyDataFromFirestore(user);
 
 
                     document.querySelector(
