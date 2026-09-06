@@ -78,122 +78,149 @@
 </div>
 
 <!-- ==================== -->
-<!-- WEAK TEST SETTINGS -->
+<!-- QUIZ SETTINGS -->
 <!-- ==================== -->
 
 <div
-    id="weak-test-settings-screen"
+    id="quiz-settings-screen"
     class="quiz-box"
     style="display: none;"
 >
 
-    <h2>WEAK TEST</h2>
+    <h2 id="settings-title">TEST</h2>
 
-    <p>苦手単語を出題する範囲</p>
-
-    <div>
-        <label for="weak-start-id">
-            開始番号
-        </label>
-
-        <input
-            type="number"
-            id="weak-start-id"
-            value="1"
-            min="1"
-            max="2300"
-        >
-    </div>
-
-    <br>
-
-    <div>
-        <label for="weak-end-id">
-            終了番号
-        </label>
-
-        <input
-            type="number"
-            id="weak-end-id"
-            value="100"
-            min="1"
-            max="2300"
-        >
-    </div>
-
-    <br>
-
-    <p>問題数</p>
-
-    <input
-        type="number"
-        id="weak-question-count"
-        value="10"
-        min="1"
-        max="100"
-    >
-
-    <br>
-    <br>
-
-    <button id="weak-start-button">
-        START
-    </button>
-
-    <button id="weak-back-button">
-        戻る
-    </button>
-
-</div>
+    <p>出題範囲</p>
 
     <!-- ==================== -->
-<!-- TEST設定画面 -->
-<!-- ==================== -->
+    <!-- Part選択 -->
+    <!-- ==================== -->
 
-<div id="test-settings-screen" class="quiz-box" style="display: none;">
+    <div class="part-buttons">
 
-    <h2>TEST</h2>
-
-    <p>出題範囲を設定してください</p>
-
-    <div>
-        <label for="start-id">開始番号</label>
-        <input
-            type="number"
-            id="start-id"
-            value="1"
-            min="1"
-            max="2300"
+        <button
+            class="part-button"
+            data-start="1"
+            data-end="400"
         >
+            Part 1
+        </button>
+
+        <button
+            class="part-button"
+            data-start="401"
+            data-end="1000"
+        >
+            Part 2
+        </button>
+
+        <button
+            class="part-button"
+            data-start="1001"
+            data-end="1400"
+        >
+            Part 3
+        </button>
+
+        <button
+            class="part-button"
+            data-start="1401"
+            data-end="2000"
+        >
+            Part 4
+        </button>
+
+        <button
+            class="part-button"
+            data-start="2001"
+            data-end="2300"
+        >
+            ＋α
+        </button>
+
     </div>
 
-    <div>
-        <label for="end-id">終了番号</label>
-        <input
-            type="number"
-            id="end-id"
-            value="100"
-            min="1"
-            max="2300"
-        >
+
+    <!-- ==================== -->
+    <!-- 範囲入力 -->
+    <!-- ==================== -->
+
+    <div class="range-settings">
+
+        <div class="setting-row">
+
+            <label for="setting-start-id">
+                開始番号
+            </label>
+
+            <input
+                type="number"
+                id="setting-start-id"
+                value="1"
+                min="1"
+                max="2300"
+            >
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <label for="setting-end-id">
+                終了番号
+            </label>
+
+            <input
+                type="number"
+                id="setting-end-id"
+                value="100"
+                min="1"
+                max="2300"
+            >
+
+        </div>
+
     </div>
 
-    <div>
-        <label for="question-count">問題数</label>
-        <input
-            type="number"
-            id="question-count"
-            value="10"
-            min="1"
-            max="100"
-        >
+
+    <!-- ==================== -->
+    <!-- 問題数 -->
+    <!-- ==================== -->
+
+    <div class="question-setting">
+
+        <label for="setting-question-count">
+            問題数
+        </label>
+
+        <div class="question-count-input">
+
+            <input
+                type="number"
+                id="setting-question-count"
+                value="10"
+                min="1"
+                max="100"
+            >
+
+            <span>問</span>
+
+        </div>
+
     </div>
 
-    <button id="start-button">
+
+    <br>
+
+
+    <!-- ==================== -->
+    <!-- ボタン -->
+    <!-- ==================== -->
+
+    <button id="settings-start-button">
         START
     </button>
 
-    <button id="test-back-button">
+    <button id="settings-back-button">
         戻る
     </button>
 

@@ -17,6 +17,15 @@ let endId = 100;
 
 let totalQuestions = 10;
 
+// ==================================================
+// 現在のテストモード
+// ==================================================
+
+// "normal" → 通常TEST
+// "weak"   → WEAK TEST
+
+let quizMode = "normal";
+
 
 // ==================================================
 // クイズの状態
@@ -586,47 +595,70 @@ document.querySelector(
     "#leap-test-button"
 ).onclick = () => {
 
+    quizMode = "normal";
+
+    document.querySelector(
+        "#settings-title"
+    ).textContent = "TEST";
+
     document.querySelector(
         "#leap-home-screen"
     ).style.display = "none";
 
     document.querySelector(
-        "#test-settings-screen"
+        "#quiz-settings-screen"
     ).style.display = "block";
 
 };
 
 // ==================================================
-// TEST設定 → クイズ開始
+// 設定画面 → クイズ開始
 // ==================================================
 
 document.querySelector(
-    "#start-button"
+    "#settings-start-button"
 ).onclick = () => {
 
+    // --------------------------------
     // 入力値を取得
+    // --------------------------------
+
     startId = Number(
         document.querySelector(
-            "#start-id"
+            "#setting-start-id"
         ).value
     );
 
     endId = Number(
         document.querySelector(
-            "#end-id"
+            "#setting-end-id"
         ).value
     );
 
     totalQuestions = Number(
         document.querySelector(
-            "#question-count"
+            "#setting-question-count"
         ).value
     );
 
 
-    // ==================================================
+    // --------------------------------
     // 入力チェック
-    // ==================================================
+    // --------------------------------
+
+    if (
+        !startId ||
+        !endId ||
+        !totalQuestions
+    ) {
+
+        alert(
+            "範囲と問題数を入力してください。"
+        );
+
+        return;
+    }
+
 
     if (startId < 1) {
 
@@ -638,10 +670,10 @@ document.querySelector(
     }
 
 
-    if (endId > 2300) {
+    if (endId > words.length) {
 
         alert(
-            "終了番号は2300以下にしてください。"
+            `終了番号は${words.length}以下にしてください。`
         );
 
         return;
@@ -672,7 +704,19 @@ document.querySelector(
 
 
     // ==================================================
-    // 出題範囲の単語を取得
+    // WEAK TEST
+    // ==================================================
+
+    if (quizMode === "weak") {
+
+        startWeakTest();
+
+        return;
+    }
+
+
+    // ==================================================
+    // 通常TEST
     // ==================================================
 
     const candidates = words.filter(word => {
@@ -685,7 +729,10 @@ document.querySelector(
     });
 
 
+    // --------------------------------
     // 4択を作れるか確認
+    // --------------------------------
+
     if (candidates.length < 4) {
 
         alert(
@@ -696,7 +743,10 @@ document.querySelector(
     }
 
 
-    // 問題数が多すぎないか確認
+    // --------------------------------
+    // 問題数チェック
+    // --------------------------------
+
     if (
         totalQuestions >
         candidates.length
@@ -711,15 +761,14 @@ document.querySelector(
     }
 
 
-    // ==================================================
-    // クイズを初期化
-    // ==================================================
+    // --------------------------------
+    // クイズ初期化
+    // --------------------------------
 
     currentQuestion = 0;
     correctCount = 0;
 
 
-    // 今回出題する単語を決定
     quizWords = shuffle(
         [...candidates]
     ).slice(
@@ -734,12 +783,12 @@ document.querySelector(
     );
 
 
-    // ==================================================
+    // --------------------------------
     // 画面切り替え
-    // ==================================================
+    // --------------------------------
 
     document.querySelector(
-        "#test-settings-screen"
+        "#quiz-settings-screen"
     ).style.display = "none";
 
     document.querySelector(
@@ -751,7 +800,6 @@ document.querySelector(
     ).style.display = "block";
 
 
-    // 最初の問題
     createQuestion();
 
 };
@@ -1116,40 +1164,46 @@ document.querySelector(
 };
 
 // ==================================================
-// LEAP HOME → WEAK TEST SETTINGS
+// LEAP HOME → WEAK TEST設定
 // ==================================================
 
 document.querySelector(
     "#leap-weak-button"
 ).onclick = () => {
 
+    quizMode = "weak";
+
+    document.querySelector(
+        "#settings-title"
+    ).textContent = "WEAK TEST";
+
     document.querySelector(
         "#leap-home-screen"
     ).style.display = "none";
 
     document.querySelector(
-        "#weak-test-settings-screen"
+        "#quiz-settings-screen"
     ).style.display = "block";
+
 };
 
-
 // ==================================================
-// WEAK TEST SETTINGS → LEAP HOME
+// 設定画面 → LEAP HOME
 // ==================================================
 
 document.querySelector(
-    "#weak-back-button"
+    "#settings-back-button"
 ).onclick = () => {
 
     document.querySelector(
-        "#weak-test-settings-screen"
+        "#quiz-settings-screen"
     ).style.display = "none";
 
     document.querySelector(
         "#leap-home-screen"
     ).style.display = "block";
-};
 
+};
 
 // ==================================================
 // START WEAK TEST
@@ -1175,19 +1229,19 @@ function startWeakTest() {
 
     const startId = Number(
         document.querySelector(
-            "#weak-start-id"
+            "#setting-start-id"
         ).value
     );
 
     const endId = Number(
         document.querySelector(
-            "#weak-end-id"
+            "#setting-end-id"
         ).value
     );
 
     const questionCount = Number(
         document.querySelector(
-            "#weak-question-count"
+            "#setting-question-count"
         ).value
     );
 
@@ -1365,7 +1419,7 @@ function startWeakTest() {
     // --------------------------------
 
     document.querySelector(
-        "#weak-test-settings-screen"
+        "#quiz-settings-screen"
     ).style.display = "none";
 
     document.querySelector(
@@ -1383,3 +1437,49 @@ function startWeakTest() {
 
     createQuestion();
 }
+
+// ==================================================
+// Partボタン
+// ==================================================
+
+document.querySelectorAll(
+    ".part-button"
+).forEach(button => {
+
+    button.onclick = () => {
+
+        const start =
+            Number(button.dataset.start);
+
+        const end =
+            Number(button.dataset.end);
+
+
+        document.querySelector(
+            "#setting-start-id"
+        ).value = start;
+
+        document.querySelector(
+            "#setting-end-id"
+        ).value = end;
+
+
+        // 選択中のPartを表示
+        document.querySelectorAll(
+            ".part-button"
+        ).forEach(button => {
+
+            button.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+        button.classList.add(
+            "selected"
+        );
+
+    };
+
+});

@@ -370,3 +370,79 @@ h1 {
     border: none;
     border-top: 1px solid #ddd;
 }
+
+/* ==================== */
+/* QUIZ SETTINGS */
+/* ==================== */
+
+.part-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 15px 0 25px;
+}
+
+.part-button {
+    margin: 0;
+}
+
+.part-button:last-child {
+    grid-column: 1 / -1;
+}
+
+
+/* 選択中のPart */
+
+.part-button.selected {
+    transform: scale(0.97);
+}
+
+
+/* 範囲設定 */
+
+.range-settings {
+    margin-bottom: 25px;
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.setting-row label {
+    width: 80px;
+    text-align: right;
+}
+
+.setting-row input {
+    width: 100px;
+}
+
+
+/* 問題数 */
+
+.question-setting {
+    margin: 20px 0;
+}
+
+.question-count-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.question-count-input input {
+    width: 100px;
+}
+
+
+/* STARTボタン */
+
+#settings-start-button {
+    margin-top: 10px;
+}
