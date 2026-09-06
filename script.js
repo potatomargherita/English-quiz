@@ -155,82 +155,109 @@ function recordAnswer(wordId, isCorrect) {
 // データ取得
 // ==================================================
 
+// ==================================================
+// データ取得
+// ==================================================
+
 fetch(API_URL)
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "データの取得に失敗しました"
+            );
+
+        }
+
+        return response.json();
+
+    })
 
     .then(data => {
 
-    words = data.map(word => ({
+        words = data.map(word => ({
 
-        id: Number(word.id),
+            id: Number(word.id),
 
-        word: word.word,
+            word: word.word,
 
-        meaning: word.meaning
+            meaning: word.meaning
 
-    }));
+        }));
 
-    console.log("データ取得成功！");
-    console.log("単語数:", words.length);
-    console.log(words);
-
-    document.querySelector(
-        "#loading-screen"
-    ).style.display = "none";
+        console.log("データ取得成功！");
+        console.log("単語数:", words.length);
+        console.log(words);
 
 
-    // ログイン状態を確認
-
-    onAuthStateChanged(
-        auth,
-        user => {
-
-            if (user) {
-
-                // ログイン済み
-
-                console.log(
-                    "ログイン中:",
-                    user.displayName
-                );
-
-                console.log(
-                    "メール:",
-                    user.email
-                );
-
-                console.log(
-                    "UID:",
-                    user.uid
-                );
+        document.querySelector(
+            "#loading-screen"
+        ).style.display = "none";
 
 
-                document.querySelector(
-                    "#login-screen"
-                ).style.display = "none";
+        // ==================================================
+        // ログイン状態を確認
+        // ==================================================
 
-                document.querySelector(
-                    "#home-screen"
-                ).style.display = "block";
+        onAuthStateChanged(
+            auth,
+            user => {
+
+                if (user) {
+
+                    // ------------------------------------------
+                    // ログイン済み
+                    // ------------------------------------------
+
+                    console.log(
+                        "ログイン中:",
+                        user.displayName
+                    );
+
+                    console.log(
+                        "メール:",
+                        user.email
+                    );
+
+                    console.log(
+                        "UID:",
+                        user.uid
+                    );
 
 
-            } else {
+                    document.querySelector(
+                        "#login-screen"
+                    ).style.display = "none";
 
-                // 未ログイン
 
-                document.querySelector(
-                    "#home-screen"
-                ).style.display = "none";
+                    document.querySelector(
+                        "#home-screen"
+                    ).style.display = "block";
 
-                document.querySelector(
-                    "#login-screen"
-                ).style.display = "block";
+
+                } else {
+
+                    // ------------------------------------------
+                    // 未ログイン
+                    // ------------------------------------------
+
+                    document.querySelector(
+                        "#home-screen"
+                    ).style.display = "none";
+
+
+                    document.querySelector(
+                        "#login-screen"
+                    ).style.display = "block";
+
+                }
 
             }
+        );
 
-        }
-    );
-
-})
+    })
 
 
     .catch(error => {
@@ -258,7 +285,6 @@ fetch(API_URL)
         `;
 
     });
-
 
 // ==================================================
 // 問題を作る
