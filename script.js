@@ -1114,3 +1114,167 @@ document.querySelector(
     ).style.display = "block";
 
 };
+
+// ==================================================
+// LEAP HOME → WEAK TEST
+// ==================================================
+
+document.querySelector(
+    "#leap-weak-button"
+).onclick = () => {
+
+    startWeakTest();
+
+};
+
+
+// ==================================================
+// WEAK TEST
+// ==================================================
+
+function startWeakTest() {
+
+
+    // ==================================================
+    // 学習済み単語から苦手単語を探す
+    // ==================================================
+
+    const weakWords = Object.keys(studyData)
+
+        .map(id => {
+
+            const data = studyData[id];
+
+            const correct = data.correct;
+
+            const incorrect = data.incorrect;
+
+            const attempts =
+                correct + incorrect;
+
+
+            const word = words.find(
+                item => item.id === Number(id)
+            );
+
+
+            if (!word || attempts === 0) {
+                return null;
+            }
+
+
+            const accuracy =
+                correct /
+                attempts *
+                100;
+
+
+            return {
+
+                word: word,
+
+                accuracy: accuracy,
+
+                attempts: attempts
+
+            };
+
+        })
+
+        .filter(item => item !== null)
+
+        .sort((a, b) => {
+
+            // 正答率が低い順
+            if (a.accuracy !== b.accuracy) {
+
+                return a.accuracy -
+                    b.accuracy;
+
+            }
+
+            // 同じ正答率なら
+            // 回答回数が多いものを優先
+            return b.attempts -
+                a.attempts;
+
+        });
+
+
+    // ==================================================
+    // 学習データがない場合
+    // ==================================================
+
+    if (weakWords.length === 0) {
+
+        alert(
+            "まだ学習データがありません。\n" +
+            "まずTESTをプレイしてください！"
+        );
+
+        return;
+
+    }
+
+
+    // ==================================================
+    // 最大10問
+    // ==================================================
+
+    const selectedWords =
+        weakWords.slice(0, 10);
+
+
+    // ==================================================
+    // クイズ設定
+    // ==================================================
+
+    quizWords =
+        selectedWords.map(
+            item => item.word
+        );
+
+
+    totalQuestions =
+        quizWords.length;
+
+
+    currentQuestion = 0;
+
+    correctCount = 0;
+
+
+    // ==================================================
+    // LEAP HOMEを隠す
+    // ==================================================
+
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "none";
+
+
+    // ==================================================
+    // 結果画面を隠す
+    // ==================================================
+
+    document.querySelector(
+        "#result-screen"
+    ).style.display = "none";
+
+
+    // ==================================================
+    // クイズ画面を表示
+    // ==================================================
+
+    document.querySelector(
+        "#quiz-screen"
+    ).style.display = "block";
+
+
+    // ==================================================
+    // クイズ開始
+    // ==================================================
+
+    createQuestion();
+
+}
