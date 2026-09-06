@@ -257,38 +257,34 @@
 
 </div>
 
-        <!-- ==================== -->
-        <!-- 結果画面 -->
-        <!-- ==================== -->
-
         <div id="result-screen" class="quiz-box" style="display: none;">
 
-            <h2>QUIZ COMPLETE!</h2>
+    <h2>QUIZ COMPLETE!</h2>
 
-            <p>あなたの結果</p>
+    <p>あなたの結果</p>
 
+    <div class="result-score">
+        <h3 id="score">0 / 10</h3>
+        <p id="percentage">正答率 0%</p>
+    </div>
 
-            <!-- 点数 -->
+    <hr>
 
-            <h3 id="score">
-                0 / 10
-            </h3>
+    <h3>今回の学習</h3>
 
+    <div id="result-word-list">
+        <!-- JSで自動生成 -->
+    </div>
 
-            <!-- 正答率 -->
+    <button id="retry-button">
+        同じ範囲でもう一度
+    </button>
 
-            <p id="percentage">
-                正答率 0%
-            </p>
+    <button id="result-back-button">
+        LEAP HOMEに戻る
+    </button>
 
-
-            <!-- もう一度 -->
-
-            <button id="retry-button">
-                もう一度挑戦
-            </button>
-
-        </div>
+</div>
 
         <!-- ==================== -->
 <!-- STATUS画面 -->

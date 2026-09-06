@@ -37,6 +37,7 @@ let correctCount = 0;
 
 // 今回のクイズで使う単語
 let quizWords = [];
+let quizResults = [];
 
 
 // ==================================================
@@ -328,6 +329,12 @@ function createQuestion() {
                 isCorrect
             );
 
+            quizResults.push({
+                word: correctWord.word,
+                meaning: correctWord.meaning,
+                isCorrect: isCorrect
+            });
+
 
             // --------------------------------------
             // クイズ画面
@@ -438,30 +445,75 @@ function showResult() {
         "#quiz-screen"
     ).style.display = "none";
 
-
     document.querySelector(
         "#result-screen"
     ).style.display = "block";
 
+
+    /* =========================
+       スコア
+    ========================= */
 
     document.querySelector(
         "#score"
     ).textContent =
         `${correctCount} / ${totalQuestions}`;
 
-
-    const percentage = Math.round(
-        correctCount /
-        totalQuestions *
-        100
-    );
-
+    const percentage =
+        Math.round(
+            correctCount /
+            totalQuestions *
+            100
+        );
 
     document.querySelector(
         "#percentage"
     ).textContent =
         `正答率 ${percentage}%`;
 
+
+    /* =========================
+       単語一覧
+    ========================= */
+
+    const resultList =
+        document.querySelector(
+            "#result-word-list"
+        );
+
+    resultList.innerHTML =
+        quizResults
+            .map(result => {
+
+                const className =
+                    result.isCorrect
+                        ? "result-word correct"
+                        : "result-word incorrect";
+
+                const mark =
+                    result.isCorrect
+                        ? "🟢"
+                        : "🔴";
+
+                return `
+                    <div class="${className}">
+                        <div class="result-word-header">
+                            <span class="result-mark">
+                                ${mark}
+                            </span>
+
+                            <strong>
+                                ${result.word}
+                            </strong>
+                        </div>
+
+                        <div class="result-meaning">
+                            ${result.meaning}
+                        </div>
+                    </div>
+                `;
+            })
+            .join("");
 }
 
 
@@ -473,13 +525,77 @@ document.querySelector(
     "#retry-button"
 ).onclick = () => {
 
+    /* =========================
+       同じ範囲から問題を再抽選
+    ========================= */
+
     currentQuestion = 0;
-
     correctCount = 0;
+    quizResults = [];
+
+    let candidates =
+        words.filter(word => {
+            return (
+                word.id >= startId &&
+                word.id <= endId
+            );
+        });
 
 
-    quizWords = shuffle(
-        [...quizWords]
+    /* =========================
+       前回と同じ問題を
+       できるだけ避ける
+    ========================= */
+
+    const previousIds =
+        quizWords.map(word => word.id);
+
+    const differentWords =
+        candidates.filter(word => {
+            return !previousIds.includes(word.id);
+        });
+
+
+    /*
+     * 新しい問題だけで必要数を
+     * 用意できる場合はそれを使う
+     *
+     * 足りない場合は残りを
+     * 元の範囲から補充
+     */
+
+    let newCandidates = [];
+
+    if (
+        differentWords.length >=
+        totalQuestions
+    ) {
+        newCandidates =
+            differentWords;
+    } else {
+        newCandidates = [
+            ...differentWords,
+            ...candidates.filter(word => {
+                return previousIds.includes(
+                    word.id
+                );
+            })
+        ];
+    }
+
+
+    quizWords =
+        shuffle(
+            [...newCandidates]
+        ).slice(
+            0,
+            totalQuestions
+        );
+
+
+    console.log(
+        "再挑戦の問題:",
+        quizWords
     );
 
 
@@ -487,14 +603,11 @@ document.querySelector(
         "#result-screen"
     ).style.display = "none";
 
-
     document.querySelector(
         "#quiz-screen"
     ).style.display = "block";
 
-
     createQuestion();
-
 };
 
 
@@ -803,6 +916,8 @@ document.querySelector(
     currentQuestion = 0;
 
     correctCount = 0;
+
+    quizResults = [];
 
 
     quizWords = shuffle(
@@ -1516,3 +1631,16 @@ endInput.addEventListener(
     "input",
     clearPartSelection
 );
+
+document.querySelector(
+    "#result-back-button"
+).onclick = () => {
+
+    document.querySelector(
+        "#result-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "block";
+};
