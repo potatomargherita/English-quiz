@@ -800,15 +800,12 @@ document.querySelector(
 };
 
 
-// ==================================================
-// 学習状況を計算して表示
-// ==================================================
-
 function updateStatus() {
 
-    // ------------------------------------------
-    // 学習した単語数
-    // ------------------------------------------
+
+    // ==================================================
+    // 学習した単語
+    // ==================================================
 
     const studiedWords =
         Object.keys(studyData);
@@ -818,9 +815,9 @@ function updateStatus() {
         studiedWords.length;
 
 
-    // ------------------------------------------
+    // ==================================================
     // 全体の正解数・不正解数
-    // ------------------------------------------
+    // ==================================================
 
     let totalCorrect = 0;
 
@@ -838,9 +835,9 @@ function updateStatus() {
     });
 
 
-    // ------------------------------------------
+    // ==================================================
     // 全体の正答率
-    // ------------------------------------------
+    // ==================================================
 
     const totalAnswers =
         totalCorrect +
@@ -861,9 +858,9 @@ function updateStatus() {
     }
 
 
-    // ------------------------------------------
-    // HTMLに表示
-    // ------------------------------------------
+    // ==================================================
+    // 学習単語数を表示
+    // ==================================================
 
     document.querySelector(
         "#studied-count"
@@ -872,11 +869,226 @@ function updateStatus() {
         `${studiedCount} / ${words.length}語`;
 
 
+    // ==================================================
+    // 全体正答率を表示
+    // ==================================================
+
     document.querySelector(
         "#overall-accuracy"
     ).textContent =
 
         `${accuracy}%`;
+
+
+    // ==================================================
+    // 単語ごとの正答率を計算
+    // ==================================================
+
+    const ranking = studiedWords.map(id => {
+
+
+        const data =
+            studyData[id];
+
+
+        const correct =
+            data.correct;
+
+
+        const incorrect =
+            data.incorrect;
+
+
+        const attempts =
+            correct + incorrect;
+
+
+        const word =
+            words.find(
+                item => item.id === Number(id)
+            );
+
+
+        let wordAccuracy = 0;
+
+
+        if (attempts > 0) {
+
+            wordAccuracy =
+                Math.round(
+                    correct /
+                    attempts *
+                    100
+                );
+
+        }
+
+
+        return {
+
+            id: Number(id),
+
+            word: word
+                ? word.word
+                : "Unknown",
+
+            correct: correct,
+
+            incorrect: incorrect,
+
+            attempts: attempts,
+
+            accuracy: wordAccuracy
+
+        };
+
+    });
+
+
+    // ==================================================
+    // 苦手ランキング
+    // ==================================================
+
+    const weakWords = [...ranking]
+
+        .sort((a, b) => {
+
+            // 正答率が低い順
+            if (a.accuracy !== b.accuracy) {
+
+                return a.accuracy -
+                    b.accuracy;
+
+            }
+
+            // 同じ正答率なら
+            // 回答回数が多い順
+            return b.attempts -
+                a.attempts;
+
+        })
+
+        .slice(0, 5);
+
+
+    // ==================================================
+    // 得意ランキング
+    // ==================================================
+
+    const strongWords = [...ranking]
+
+        .sort((a, b) => {
+
+            // 正答率が高い順
+            if (a.accuracy !== b.accuracy) {
+
+                return b.accuracy -
+                    a.accuracy;
+
+            }
+
+            // 同じ正答率なら
+            // 回答回数が多い順
+            return b.attempts -
+                a.attempts;
+
+        })
+
+        .slice(0, 5);
+
+
+    // ==================================================
+    // 苦手単語をHTMLにする
+    // ==================================================
+
+    const weakElement =
+        document.querySelector(
+            "#weak-words"
+        );
+
+
+    if (weakWords.length === 0) {
+
+        weakElement.innerHTML =
+            "まだデータがありません。";
+
+    }
+
+    else {
+
+        weakElement.innerHTML =
+            weakWords.map((item, index) => {
+
+                return `
+
+                    <div class="status-word">
+
+                        <strong>
+                            ${index + 1}. ${item.word}
+                        </strong>
+
+                        <br>
+
+                        正答率
+                        ${item.accuracy}%
+
+                        （${item.correct}
+                        / ${item.attempts}）
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    // ==================================================
+    // 得意単語をHTMLにする
+    // ==================================================
+
+    const strongElement =
+        document.querySelector(
+            "#strong-words"
+        );
+
+
+    if (strongWords.length === 0) {
+
+        strongElement.innerHTML =
+            "まだデータがありません。";
+
+    }
+
+    else {
+
+        strongElement.innerHTML =
+            strongWords.map((item, index) => {
+
+                return `
+
+                    <div class="status-word">
+
+                        <strong>
+                            ${index + 1}. ${item.word}
+                        </strong>
+
+                        <br>
+
+                        正答率
+                        ${item.accuracy}%
+
+                        （${item.correct}
+                        / ${item.attempts}）
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
 
 }
 

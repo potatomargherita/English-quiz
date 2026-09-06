@@ -188,15 +188,60 @@
 
         </div>
 
-        <div id="status-screen" class="quiz-box" style="display: none;">
+        <!-- ==================== -->
+<!-- STATUS画面 -->
+<!-- ==================== -->
 
-    <h2>学習状況</h2>
+<div id="status-screen" class="quiz-box" style="display: none;">
+
+    <h2>LEAP STATUS</h2>
+
+
+    <!-- 学習した単語 -->
 
     <p>学習した単語</p>
-    <h3 id="studied-count">0語</h3>
+
+    <h3 id="studied-count">
+        0 / 2300語
+    </h3>
+
+
+    <!-- 全体の正答率 -->
 
     <p>全体の正答率</p>
-    <h3 id="overall-accuracy">0%</h3>
+
+    <h3 id="overall-accuracy">
+        0%
+    </h3>
+
+
+    <!-- ==================== -->
+    <!-- 苦手単語 -->
+    <!-- ==================== -->
+
+    <hr>
+
+    <h3>🔴 苦手な単語</h3>
+
+    <div id="weak-words">
+        まだデータがありません。
+    </div>
+
+
+    <!-- ==================== -->
+    <!-- 得意単語 -->
+    <!-- ==================== -->
+
+    <hr>
+
+    <h3>🟢 得意な単語</h3>
+
+    <div id="strong-words">
+        まだデータがありません。
+    </div>
+
+
+    <br>
 
     <button id="status-back-button">
         戻る
