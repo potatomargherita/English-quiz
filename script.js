@@ -1,4 +1,4 @@
-const API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnTHAVGGqkhFQ8cQt9-CYlPh0eTGEB9CoY16UJBjF25-IgMntajbHLD6Vf4SFW8AGhDqnr3gi53Gzd3PjmPeiyK0yPQ_WO7I59RG-EZtP_FoFoObqp_dijEqz0gbw7VaTbNv_m4QxYHF-cwewdlDwAzCXIQfcwfqfDYDXagbPWzKlHH8qv-2J85g4srGO4VBfVfjPoDnr6VSYYiEImwnrJWi-RoDQkkX8HZn3V3N3V6ei7nykIip-rQoHrniQMXk6_DtQYSI_uL6QTO_I7Y8ItgjUNFZPO5w&lib=MGGNkkBYB9_EbA2oXK5fE53PtzVWH_WY1";
+const API_URL = "https://script.google.com/macros/s/AKfycby0CTKPBEFCH__N4fv68p-wNKtNEH6jNPmspOjMU6EN_RW6H5TEYTPyeoF_DLz6gn48PQ/exec";
 
 
 // ==================================================
