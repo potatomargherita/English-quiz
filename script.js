@@ -490,17 +490,10 @@ function showResult() {
                         ? "result-word correct"
                         : "result-word incorrect";
 
-                const mark =
-                    result.isCorrect
-                        ? "🟢"
-                        : "🔴";
 
                 return `
                     <div class="${className}">
                         <div class="result-word-header">
-                            <span class="result-mark">
-                                ${mark}
-                            </span>
 
                             <strong>
                                 ${result.word}
