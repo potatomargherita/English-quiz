@@ -773,3 +773,132 @@ document.querySelector(
     ).style.display = "block";
 
 };
+
+// ==================================================
+// LEAP HOME → STATUS
+// ==================================================
+
+document.querySelector(
+    "#leap-status-button"
+).onclick = () => {
+
+    // LEAP HOMEを隠す
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "none";
+
+
+    // 学習状況を計算
+    updateStatus();
+
+
+    // STATUS画面を表示
+    document.querySelector(
+        "#status-screen"
+    ).style.display = "block";
+
+};
+
+
+// ==================================================
+// 学習状況を計算して表示
+// ==================================================
+
+function updateStatus() {
+
+    // ------------------------------------------
+    // 学習した単語数
+    // ------------------------------------------
+
+    const studiedWords =
+        Object.keys(studyData);
+
+
+    const studiedCount =
+        studiedWords.length;
+
+
+    // ------------------------------------------
+    // 全体の正解数・不正解数
+    // ------------------------------------------
+
+    let totalCorrect = 0;
+
+    let totalIncorrect = 0;
+
+
+    studiedWords.forEach(id => {
+
+        totalCorrect +=
+            studyData[id].correct;
+
+        totalIncorrect +=
+            studyData[id].incorrect;
+
+    });
+
+
+    // ------------------------------------------
+    // 全体の正答率
+    // ------------------------------------------
+
+    const totalAnswers =
+        totalCorrect +
+        totalIncorrect;
+
+
+    let accuracy = 0;
+
+
+    if (totalAnswers > 0) {
+
+        accuracy = Math.round(
+            totalCorrect /
+            totalAnswers *
+            100
+        );
+
+    }
+
+
+    // ------------------------------------------
+    // HTMLに表示
+    // ------------------------------------------
+
+    document.querySelector(
+        "#studied-count"
+    ).textContent =
+
+        `${studiedCount} / ${words.length}語`;
+
+
+    document.querySelector(
+        "#overall-accuracy"
+    ).textContent =
+
+        `${accuracy}%`;
+
+}
+
+
+// ==================================================
+// STATUS → LEAP HOME
+// ==================================================
+
+document.querySelector(
+    "#status-back-button"
+).onclick = () => {
+
+
+    // STATUS画面を隠す
+    document.querySelector(
+        "#status-screen"
+    ).style.display = "none";
+
+
+    // LEAP HOMEを表示
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "block";
+
+};
