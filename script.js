@@ -1646,3 +1646,282 @@ document.querySelector(
         "#leap-home-screen"
     ).style.display = "block";
 };
+
+// ==================================================
+// LEAP HOME → LIST
+// ==================================================
+
+document.querySelector(
+    "#leap-list-button"
+).onclick = () => {
+
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#list-screen"
+    ).style.display = "block";
+
+    updateList();
+
+};
+
+
+// ==================================================
+// LIST更新
+// ==================================================
+
+let listStartId = 1;
+let listEndId = 2300;
+
+
+function updateList() {
+
+    const searchInput =
+        document.querySelector(
+            "#list-search-input"
+        );
+
+    const searchText =
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+    const filteredWords =
+        words.filter(word => {
+
+            // ------------------------------
+            // ID範囲
+            // ------------------------------
+
+            if (
+                word.id < listStartId ||
+                word.id > listEndId
+            ) {
+
+                return false;
+
+            }
+
+
+            // ------------------------------
+            // 検索
+            // ------------------------------
+
+            if (searchText === "") {
+
+                return true;
+
+            }
+
+
+            const wordText =
+                String(word.word)
+                    .toLowerCase();
+
+            const meaningText =
+                String(word.meaning)
+                    .toLowerCase();
+
+
+            return (
+                wordText.includes(searchText) ||
+                meaningText.includes(searchText)
+            );
+
+        });
+
+
+    const container =
+        document.querySelector(
+            "#list-word-container"
+        );
+
+
+    // ------------------------------
+    // 単語がない
+    // ------------------------------
+
+    if (filteredWords.length === 0) {
+
+        container.innerHTML = `
+            <div style="
+                padding: 30px;
+                text-align: center;
+                color: #999;
+            ">
+                該当する単語がありません。
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    // ------------------------------
+    // 単語表示
+    // ------------------------------
+
+    container.innerHTML =
+        filteredWords
+            .map(word => {
+
+                const data =
+                    studyData[word.id];
+
+
+                let statusText =
+                    "未学習";
+
+                let learnedClass = "";
+
+
+                if (data) {
+
+                    const correct =
+                        data.correct || 0;
+
+                    const incorrect =
+                        data.incorrect || 0;
+
+                    const attempts =
+                        correct +
+                        incorrect;
+
+
+                    if (attempts > 0) {
+
+                        const accuracy =
+                            Math.round(
+                                correct /
+                                attempts *
+                                100
+                            );
+
+
+                        statusText =
+                            `正答率 ${accuracy}%　` +
+                            `（${attempts}回）`;
+
+                        learnedClass =
+                            "learned";
+
+                    }
+
+                }
+
+
+                return `
+                    <div class="list-word ${learnedClass}">
+
+                        <div class="list-word-header">
+
+                            <span class="list-word-id">
+                                #${word.id}
+                            </span>
+
+                            <span class="list-word-name">
+                                ${word.word}
+                            </span>
+
+                        </div>
+
+
+                        <div class="list-word-meaning">
+                            ${word.meaning}
+                        </div>
+
+
+                        <div class="list-word-status ${learnedClass}">
+                            ${statusText}
+                        </div>
+
+                    </div>
+                `;
+
+            })
+            .join("");
+
+}
+
+
+// ==================================================
+// LIST検索
+// ==================================================
+
+document.querySelector(
+    "#list-search-input"
+).addEventListener(
+    "input",
+    updateList
+);
+
+
+// ==================================================
+// LIST Part選択
+// ==================================================
+
+document.querySelectorAll(
+    ".list-part-button"
+).forEach(button => {
+
+    button.onclick = () => {
+
+        listStartId =
+            Number(
+                button.dataset.start
+            );
+
+        listEndId =
+            Number(
+                button.dataset.end
+            );
+
+
+        // ------------------------------
+        // 選択状態
+        // ------------------------------
+
+        document.querySelectorAll(
+            ".list-part-button"
+        ).forEach(partButton => {
+
+            partButton.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+        button.classList.add(
+            "selected"
+        );
+
+
+        updateList();
+
+    };
+
+});
+
+
+// ==================================================
+// LIST → LEAP HOME
+// ==================================================
+
+document.querySelector(
+    "#list-back-button"
+).onclick = () => {
+
+    document.querySelector(
+        "#list-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "block";
+
+};
