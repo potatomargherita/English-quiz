@@ -1116,15 +1116,50 @@ document.querySelector(
 };
 
 // ==================================================
-// LEAP HOME → WEAK TEST
+// LEAP HOME → WEAK TEST SETTINGS
 // ==================================================
 
 document.querySelector(
     "#leap-weak-button"
 ).onclick = () => {
 
-    startWeakTest();
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "none";
 
+    document.querySelector(
+        "#weak-test-settings-screen"
+    ).style.display = "block";
+};
+
+
+// ==================================================
+// WEAK TEST SETTINGS → LEAP HOME
+// ==================================================
+
+document.querySelector(
+    "#weak-back-button"
+).onclick = () => {
+
+    document.querySelector(
+        "#weak-test-settings-screen"
+    ).style.display = "none";
+
+    document.querySelector(
+        "#leap-home-screen"
+    ).style.display = "block";
+};
+
+
+// ==================================================
+// START WEAK TEST
+// ==================================================
+
+document.querySelector(
+    "#weak-start-button"
+).onclick = () => {
+
+    startWeakTest();
 };
 
 
@@ -1134,100 +1169,176 @@ document.querySelector(
 
 function startWeakTest() {
 
+    // --------------------------------
+    // 設定値を取得
+    // --------------------------------
 
-    // ==================================================
-    // 学習済み単語から苦手単語を探す
-    // ==================================================
+    const startId = Number(
+        document.querySelector(
+            "#weak-start-id"
+        ).value
+    );
 
-    const weakWords = Object.keys(studyData)
+    const endId = Number(
+        document.querySelector(
+            "#weak-end-id"
+        ).value
+    );
 
-        .map(id => {
+    const questionCount = Number(
+        document.querySelector(
+            "#weak-question-count"
+        ).value
+    );
 
-            const data = studyData[id];
 
-            const correct = data.correct;
+    // --------------------------------
+    // 入力チェック
+    // --------------------------------
 
-            const incorrect = data.incorrect;
+    if (
+        !startId ||
+        !endId ||
+        !questionCount
+    ) {
+
+        alert(
+            "開始番号・終了番号・問題数を入力してください。"
+        );
+
+        return;
+    }
+
+
+    if (startId > endId) {
+
+        alert(
+            "開始番号は終了番号以下にしてください。"
+        );
+
+        return;
+    }
+
+
+    if (startId < 1 || endId > words.length) {
+
+        alert(
+            `範囲は1〜${words.length}で指定してください。`
+        );
+
+        return;
+    }
+
+
+    if (questionCount < 1) {
+
+        alert(
+            "問題数は1問以上にしてください。"
+        );
+
+        return;
+    }
+
+
+    // --------------------------------
+    // 範囲内の単語だけ取得
+    // --------------------------------
+
+    const rangeWords = words.filter(word => {
+
+        return (
+            word.id >= startId &&
+            word.id <= endId
+        );
+
+    });
+
+
+    // --------------------------------
+    // 学習済み＋正答率を計算
+    // --------------------------------
+
+    const weakWords = rangeWords
+        .map(word => {
+
+            const data =
+                studyData[word.id];
+
+            if (!data) {
+                return null;
+            }
+
+            const correct =
+                data.correct || 0;
+
+            const incorrect =
+                data.incorrect || 0;
 
             const attempts =
                 correct + incorrect;
 
-
-            const word = words.find(
-                item => item.id === Number(id)
-            );
-
-
-            if (!word || attempts === 0) {
+            if (attempts === 0) {
                 return null;
             }
 
-
             const accuracy =
-                correct /
-                attempts *
-                100;
-
+                correct / attempts * 100;
 
             return {
-
                 word: word,
-
                 accuracy: accuracy,
-
                 attempts: attempts
-
             };
 
         })
-
-        .filter(item => item !== null)
-
-        .sort((a, b) => {
-
-            // 正答率が低い順
-            if (a.accuracy !== b.accuracy) {
-
-                return a.accuracy -
-                    b.accuracy;
-
-            }
-
-            // 同じ正答率なら
-            // 回答回数が多いものを優先
-            return b.attempts -
-                a.attempts;
-
-        });
+        .filter(item => item !== null);
 
 
-    // ==================================================
-    // 学習データがない場合
-    // ==================================================
+    // --------------------------------
+    // 苦手順に並べる
+    // --------------------------------
+
+    weakWords.sort((a, b) => {
+
+        // 正答率が低い順
+        if (a.accuracy !== b.accuracy) {
+
+            return a.accuracy - b.accuracy;
+
+        }
+
+        // 正答率が同じなら
+        // 回答回数が多い方を優先
+        return b.attempts - a.attempts;
+
+    });
+
+
+    // --------------------------------
+    // 学習済みの苦手単語がない場合
+    // --------------------------------
 
     if (weakWords.length === 0) {
 
         alert(
-            "まだ学習データがありません。\n" +
-            "まずTESTをプレイしてください！"
+            "この範囲には、まだ学習した単語がありません。"
         );
 
         return;
-
     }
 
 
-    // ==================================================
-    // 最大10問
-    // ==================================================
+    // --------------------------------
+    // 指定された問題数だけ選ぶ
+    // --------------------------------
 
     const selectedWords =
-        weakWords.slice(0, 10);
+        weakWords.slice(0, questionCount);
 
 
-    // ==================================================
-    // クイズ設定
-    // ==================================================
+    // --------------------------------
+    // 実際の出題単語を設定
+    // --------------------------------
 
     quizWords =
         selectedWords.map(
@@ -1235,46 +1346,40 @@ function startWeakTest() {
         );
 
 
+    // 実際に出題できる問題数
     totalQuestions =
         quizWords.length;
 
+
+    // --------------------------------
+    // クイズを初期化
+    // --------------------------------
 
     currentQuestion = 0;
 
     correctCount = 0;
 
 
-    // ==================================================
-    // LEAP HOMEを隠す
-    // ==================================================
+    // --------------------------------
+    // 画面切り替え
+    // --------------------------------
 
     document.querySelector(
-        "#leap-home-screen"
+        "#weak-test-settings-screen"
     ).style.display = "none";
-
-
-    // ==================================================
-    // 結果画面を隠す
-    // ==================================================
 
     document.querySelector(
         "#result-screen"
     ).style.display = "none";
-
-
-    // ==================================================
-    // クイズ画面を表示
-    // ==================================================
 
     document.querySelector(
         "#quiz-screen"
     ).style.display = "block";
 
 
-    // ==================================================
-    // クイズ開始
-    // ==================================================
+    // --------------------------------
+    // 第1問
+    // --------------------------------
 
     createQuestion();
-
 }
