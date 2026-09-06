@@ -1,4 +1,53 @@
-const API_URL = "https://script.google.com/macros/s/AKfycby0CTKPBEFCH__N4fv68p-wNKtNEH6jNPmspOjMU6EN_RW6H5TEYTPyeoF_DLz6gn48PQ/exec";
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+// ==================================================
+// Firebase
+// ==================================================
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyCMsBbZB9aU5UJHek_vNnNeBFFD1s-PfWM",
+
+    authDomain: "english-quest-7515d.firebaseapp.com",
+
+    projectId: "english-quest-7515d",
+
+    storageBucket: "english-quest-7515d.firebasestorage.app",
+
+    messagingSenderId: "765116153042",
+
+    appId: "1:765116153042:web:1a757b092199d4d5e6010b"
+
+};
+
+
+const firebaseApp =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(firebaseApp);
+
+
+const googleProvider =
+    new GoogleAuthProvider();
+
+
+// ==================================================
+// API
+// ==================================================
+
+const API_URL ="https://script.google.com/macros/s/AKfycby0CTKPBEFCH__N4fv68p-wNKtNEH6jNPmspOjMU6EN_RW6H5TEYTPyeoF_DLz6gn48PQ/exec";
 
 
 // ==================================================
@@ -108,60 +157,80 @@ function recordAnswer(wordId, isCorrect) {
 
 fetch(API_URL)
 
-    .then(response => {
-
-        if (!response.ok) {
-
-            throw new Error(
-                "データの取得に失敗しました"
-            );
-
-        }
-
-        return response.json();
-
-    })
-
     .then(data => {
 
-        // ------------------------------------------
-        // IDを数字に変換
-        // ------------------------------------------
+    words = data.map(word => ({
 
-        words = data.map(word => ({
+        id: Number(word.id),
 
-            id: Number(word.id),
+        word: word.word,
 
-            word: word.word,
+        meaning: word.meaning
 
-            meaning: word.meaning
+    }));
 
-        }));
+    console.log("データ取得成功！");
+    console.log("単語数:", words.length);
+    console.log(words);
 
-
-        console.log("データ取得成功！");
-        console.log("単語数:", words.length);
-        console.log(words);
-
-
-        // ------------------------------------------
-        // ロード画面を消す
-        // ------------------------------------------
-
-        document.querySelector(
-            "#loading-screen"
-        ).style.display = "none";
+    document.querySelector(
+        "#loading-screen"
+    ).style.display = "none";
 
 
-        // ------------------------------------------
-        // HOMEを表示
-        // ------------------------------------------
+    // ログイン状態を確認
 
-        document.querySelector(
-            "#home-screen"
-        ).style.display = "block";
+    onAuthStateChanged(
+        auth,
+        user => {
 
-    })
+            if (user) {
+
+                // ログイン済み
+
+                console.log(
+                    "ログイン中:",
+                    user.displayName
+                );
+
+                console.log(
+                    "メール:",
+                    user.email
+                );
+
+                console.log(
+                    "UID:",
+                    user.uid
+                );
+
+
+                document.querySelector(
+                    "#login-screen"
+                ).style.display = "none";
+
+                document.querySelector(
+                    "#home-screen"
+                ).style.display = "block";
+
+
+            } else {
+
+                // 未ログイン
+
+                document.querySelector(
+                    "#home-screen"
+                ).style.display = "none";
+
+                document.querySelector(
+                    "#login-screen"
+                ).style.display = "block";
+
+            }
+
+        }
+    );
+
+})
 
 
     .catch(error => {
@@ -1916,5 +1985,86 @@ document.querySelector(
     document.querySelector(
         "#leap-home-screen"
     ).style.display = "block";
+
+};
+
+// ==================================================
+// Googleログイン
+// ==================================================
+
+document.querySelector(
+    "#google-login-button"
+).onclick = async () => {
+
+    const button =
+        document.querySelector(
+            "#google-login-button"
+        );
+
+    const errorElement =
+        document.querySelector(
+            "#login-error"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "ログイン中...";
+
+    errorElement.textContent = "";
+
+
+    try {
+
+        const result =
+            await signInWithPopup(
+                auth,
+                googleProvider
+            );
+
+
+        const user =
+            result.user;
+
+
+        console.log(
+            "Googleログイン成功！"
+        );
+
+        console.log(
+            "名前:",
+            user.displayName
+        );
+
+        console.log(
+            "メール:",
+            user.email
+        );
+
+        console.log(
+            "UID:",
+            user.uid
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Googleログインエラー:",
+            error
+        );
+
+
+        errorElement.textContent =
+            "ログインに失敗しました。もう一度試してください。";
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "Googleでログイン";
+
+    }
 
 };
